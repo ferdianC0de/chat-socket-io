@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: 0.5%;
+        }
+
+        form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="messages"></ul>
+    <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+
+            var currentSocket = socket.emit('getSocketId', null);
+            $('form').submit(function (e) {
+                console.log(currentSocket.id);
+                e.preventDefault(); // prevents page reloading
+                socket.emit('chat message', $('#m').val(), currentSocket.id);
+                $('#m').val('');
+                return false;
+            });
+            socket.on('chat', function (msg, id) {
+                if (currentSocket.id == id) {
+                    console.log("a");
+                    $('#messages').append($('<li style="background-color: blue;">').text(msg));
+                }else{
+                    console.log("b");
+                    $('#messages').append($('<li style="background-color: green;">').text(msg));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
