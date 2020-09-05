@@ -49,7 +49,9 @@
 </head>
 
 <body>
-    <ul id="messages"></ul>
+    <ul id="messages">
+
+    </ul>
     <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
     </form>
@@ -70,10 +72,12 @@
             socket.on('chat', function (msg, id) {
                 if (currentSocket.id == id) {
                     console.log("a");
-                    $('#messages').append($('<li style="background-color: blue;">').text(msg));
+                    $('#messages').append($('<li style="background-color: blue; text-align: right;">').text(msg));
+                    $('#messages').append($('<li style="background-color: white;width: 100%;"></li>'));
                 }else{
                     console.log("b");
                     $('#messages').append($('<li style="background-color: green;">').text(msg));
+                    $('#messages').append($('<li style="background-color: white;width: 100%;"></li>'));
                 }
             });
         });
